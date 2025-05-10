@@ -75,7 +75,7 @@ WSGI_APPLICATION = 'kartpool.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'kartpool',
         'USER': 'postgres',
         'PASSWORD': 'Ne0978853',  # use the one you just tested
@@ -125,3 +125,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+import os
+os.environ['GDAL_LIBRARY_PATH'] = r'C:\OSGeo4W\bin\gdal310.dll'

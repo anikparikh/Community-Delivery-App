@@ -1,9 +1,11 @@
+from django.utils.timezone import now
+
 from django.db import migrations
 import json
 from django.contrib.gis.geos import fromstr
 from pathlib import Path
 
-DATA_FILENAME = 'data/data.json'
+DATA_FILENAME = 'data/data.json.json'
 CITY = 'Atlanta'
 
 def load_data(apps, schema_editor):
@@ -17,7 +19,7 @@ def load_data(apps, schema_editor):
                 objType = obj['type']
                 if objType == 'node':
                     tags = obj['tags']
-                    name = tags.get('name','N/A')
+                    name = tags.get('name', 'N/A')
 
                     longitude = obj.get('lon', 0)
                     latitude = obj.get('lat', 0)
@@ -30,7 +32,7 @@ def load_data(apps, schema_editor):
 
                     store_type = tags.get('shop', 'N/A')
                     phone = tags.get('phone', 'N/A')
-                    
+
                     Store(
                         name=name,
                         latitude=latitude,
@@ -40,11 +42,13 @@ def load_data(apps, schema_editor):
                         phone=phone[:100],
                         address=address[:100],
                         city=CITY,
+                        created_at=now(),
                     ).save()
             except KeyError:
-                pass  
+                pass
 
 class Migration(migrations.Migration):
+
     dependencies = [
         ('stores', '0001_initial'),
     ]
