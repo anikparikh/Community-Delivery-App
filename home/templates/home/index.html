@@ -1,0 +1,27 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Kartpool</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Mapbox CSS -->
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css' rel='stylesheet' />
+    <link href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css' rel='stylesheet' />
+
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="{% static 'home/css/styles.css' %}">
+</head>
+<body>
+    <div id="map" style="width: 100vw; height: 100vh;"></div>
+
+    <!-- Mapbox JS -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js'></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js'></script>
+
+    <!-- App scripts -->
+    <script type="module" src="{% static 'home/js/index.js' %}"></script>
+</body>
+</html>
