@@ -11,3 +11,28 @@ export async function fetchNearbyStores(latitude, longitude) {
         return [];
     }
 }
+
+export async function addWishlist(buyer, items, storeId) {
+    try {
+        const response = await fetch('http://127.0.0.1:8000/wishlists/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                buyer: buyer,
+                items: items,
+                store: storeId
+            }),
+        });
+
+        if (!response.ok) {
+            console.error("Failed to add wishlist", await response.json());
+            throw new Error("Request failed");
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Failed to add wishlist", error);
+    }
+}

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'stores',
     'rest_framework',
     'home',
+    'wishlists'
 ]
 
 MIDDLEWARE = [

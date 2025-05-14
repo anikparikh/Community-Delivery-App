@@ -15,13 +15,27 @@
     <link rel="stylesheet" href="{% static 'home/css/styles.css' %}">
 </head>
 <body>
+    <!-- Map container -->
     <div id="map" style="width: 100vw; height: 100vh;"></div>
+
+    <!-- ✅ Wishlist input UI -->
+    <div id="wishlist-container" style="position: absolute; top: 10px; left: 10px; z-index: 999; background: white; padding: 10px; border-radius: 8px;">
+        <input id="wishlist-items" type="text" placeholder="Enter items (comma-separated)">
+        <button id="add-wishlist">Add a wishlist</button>
+    </div>
 
     <!-- Mapbox JS -->
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js'></script>
     <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js'></script>
 
-    <!-- App scripts -->
+<script>
+    window.USERNAME = "{{ request.GET.username|default:'' }}";
+</script>
+
+
+    <!-- ✅ App scripts -->
+    <script type="module" src="{% static 'home/js/api.js' %}"></script>
+    <script type="module" src="{% static 'home/js/wishlists.js' %}"></script>
     <script type="module" src="{% static 'home/js/index.js' %}"></script>
 </body>
 </html>

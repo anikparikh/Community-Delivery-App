@@ -1,3 +1,7 @@
+import { updateSelectedStore } from './wishlists.js';
+
+
+
 mapboxgl.accessToken = 'pk.eyJ1IjoiYW5pa3AiLCJhIjoiY21hbG5ic2VqMGFsNzJucGs2anIyNWJzeiJ9.33P_U-2kFH0pgTTMKHTdWw';
 
 function addMap() {
@@ -46,18 +50,19 @@ export function convertToGeoJson(stores) {
     };
 }
 
-function plotStoresOnMap(map, storesGeoJson) {
+function plotStoresOnMap(map, storesGeoJson, handleMarkerClick) {
     for (let store of storesGeoJson.features) {
         let el = document.createElement('div');
         el.className = 'store';
         el.title = `${store.properties.name}\n` +
-                   `approximately ${store.properties.distance.toFixed(2)} km away\n` +
-                   `Address: ${store.properties.address || "N/A"}\n` +
-                   `Phone: ${store.properties.phone || "N/A"}\n` +
-                   `Rating: ${store.properties.rating || "N/A"}`;
+            `approximately ${store.properties.distance?.toFixed(2) ?? 'N/A'} km away\n` +
+            `Address: ${store.properties.address || "N/A"}\n` +
+            `Phone: ${store.properties.phone || "N/A"}\n` +
+            `Rating: ${store.properties.rating || "N/A"}`;
+
 
         el.addEventListener('click', () => {
-            updateSelectedStore(store.properties.id); // ✅ add this
+            handleMarkerClick(store.properties.id); // ✅ call passed-in function
         });
 
         new mapboxgl.Marker(el)
@@ -65,6 +70,7 @@ function plotStoresOnMap(map, storesGeoJson) {
             .addTo(map);
     }
 }
+
 
 
 // ✅ Export everything you want to use in index.js
