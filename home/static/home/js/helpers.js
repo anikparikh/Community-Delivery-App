@@ -13,12 +13,14 @@ export function renderWishlists(containerId, wishlists) {
     const MAX_DISPLAY = 5;
     for (let wishlist of wishlists.slice(0, MAX_DISPLAY)) {
         const div = document.createElement("div");
-        div.className = "wishlist-item";
+        div.className = "wishlist";
+        div.setAttribute("data-store-id", wishlist.store);  // ✅ add this
         div.innerHTML = `
             <p><strong>Buyer:</strong> ${wishlist.buyer}</p>
             <p><strong>Items:</strong> ${wishlist.items.join(', ')}</p>
             <p><strong>Status:</strong> ${wishlist.status}</p>
-    `;
-    container.appendChild(div);
+`;
+container.appendChild(div);
+
    }
 }

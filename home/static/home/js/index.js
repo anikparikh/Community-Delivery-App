@@ -1,40 +1,52 @@
-import { addMap, addGeocoder, convertToGeoJson, plotStoresOnMap } from './map.js';
-import { fetchNearbyStores } from './api.js';
-import { createWishlist, updateSelectedStore } from './wishlists.js'; // ✅ must exist
+import {
+    addMap,
+    addGeocoder,
+    convertToGeoJson,
+    plotStoresOnMap,
+    setStoreNavigation
+} from './map.js';
 
-// Store selected store ID globally
+import {
+    createWishlist,
+    updateSelectedStore,
+    displayNearbyWishlists,
+    displayMyRequests,
+    displayMyTrips
+} from './wishlists.js';
+
+import { fetchNearbyStores } from './api.js';
+
 let STORE = null;
 
-// Function to set selected store ID and notify wishlists module
 function setSelectedStore(storeId) {
     STORE = storeId;
     updateSelectedStore(storeId);
 }
 
-// Display stores near searched location
-async function displayNearbyStores(latitude, longitude) {
-    const stores = await fetchNearbyStores(latitude, longitude);
-    console.log("Fetched stores:", stores);
-    const storesGeoJson = convertToGeoJson(stores);
-    console.log("GeoJSON:", storesGeoJson);
-    plotStoresOnMap(map, storesGeoJson, setSelectedStore); // Pass handler
+async function displayNearbyStores(lat, lng) {
+    const stores = await fetchNearbyStores(lat, lng);
+    const geoJson = convertToGeoJson(stores);
+    plotStoresOnMap(map, geoJson, setSelectedStore);
+
+    window.MAP = map;
+    window.STORES_GEOJSON = geoJson;
+
+    await displayNearbyWishlists(lat, lng);
+    await displayMyRequests(lat, lng);
+    await displayMyTrips(lat, lng);
 }
 
-// Callback for when user selects a place from geocoder
 function geocoderCallback(data) {
-    const latitude = data.result.center[1];
-    const longitude = data.result.center[0];
-    // ✅ Save globally for later refreshes
-    window.MAP_MARKER_COORDS = [longitude, latitude];
-    displayNearbyStores(latitude, longitude);
+    const lat = data.result.center[1];
+    const lng = data.result.center[0];
+    window.MAP_MARKER_COORDS = [lng, lat];
+    displayNearbyStores(lat, lng);
 }
 
-// Initialize the map and geocoder
 const map = addMap();
 addGeocoder(map, geocoderCallback);
 
-// Bind Add Wishlist button to handler
-document.getElementById("add-wishlist").onclick = function (e) {
-    window.STORE = STORE; // Make sure it's globally accessible
-    createWishlist(); // This should POST data to backend
+document.getElementById("add-wishlist").onclick = () => {
+    window.STORE = STORE;
+    createWishlist();
 };

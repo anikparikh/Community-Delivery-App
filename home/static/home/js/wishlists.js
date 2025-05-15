@@ -1,5 +1,6 @@
 import { addWishlist, fetchNearbyWishlists } from './api.js';
-import { renderWishlists } from './helpers.js'; // Make sure this is defined
+import { renderWishlists } from './helpers.js';
+import { setStoreNavigation } from './map.js';
 
 export function updateSelectedStore(storeId) {
     window.STORE = storeId;
@@ -12,49 +13,37 @@ export async function createWishlist() {
 
     if (username && storeId && wishlistInput) {
         await addWishlist(username, wishlistInput.split(","), storeId);
-
-        // ✅ Refresh wishlists after creating one
         const [lng, lat] = window.MAP_MARKER_COORDS || [];
         if (lat && lng) {
             await displayNearbyWishlists(lat, lng);
             await displayMyRequests(lat, lng);
             await displayMyTrips(lat, lng);
-        } else {
-            console.warn("MAP_MARKER_COORDS not set. Cannot refresh wishlist tabs.");
         }
-    } else {
-        console.log("Missing input data:", username, storeId, wishlistInput);
     }
 }
 
-
-export async function displayNearbyWishlists(latitude, longitude) {
+export async function displayNearbyWishlists(lat, lng) {
     try {
-        const nearbyWishlists = await fetchNearbyWishlists(latitude, longitude);
-        console.log("Nearby Wishlists:", nearbyWishlists); // 👈 Add this
-        renderWishlists('nearby-wishlists', nearbyWishlists);
-    } catch (error) {
-        console.error("Error loading nearby wishlists:", error);
+        const nearby = await fetchNearbyWishlists(lat, lng);
+        renderWishlists('nearby-wishlists', nearby);
+
+        // ✅ Delay ensures DOM is rendered before attaching
+        setTimeout(() => {
+            if (window.MAP && window.STORES_GEOJSON) {
+                setStoreNavigation(window.MAP, window.STORES_GEOJSON);
+            }
+        }, 50);
+    } catch (err) {
+        console.error("Wishlist load failed", err);
     }
 }
 
-
-// ✅ Show wishlists you created (buyer = USERNAME)
-export async function displayMyRequests(latitude, longitude) {
-    try {
-        const myWishlists = await fetchNearbyWishlists(latitude, longitude, { buyer: USERNAME });
-        renderWishlists('my-wishlists', myWishlists);
-    } catch (error) {
-        console.error("Error loading my requests:", error);
-    }
+export async function displayMyRequests(lat, lng) {
+    const my = await fetchNearbyWishlists(lat, lng, { buyer: USERNAME });
+    renderWishlists('my-wishlists', my);
 }
 
-// ✅ Show wishlists you accepted (wishmaster = USERNAME)
-export async function displayMyTrips(latitude, longitude) {
-    try {
-        const myTrips = await fetchNearbyWishlists(latitude, longitude, { wishmaster: USERNAME });
-        renderWishlists('my-trips', myTrips);
-    } catch (error) {
-        console.error("Error loading my trips:", error);
-    }
+export async function displayMyTrips(lat, lng) {
+    const trips = await fetchNearbyWishlists(lat, lng, { wishmaster: USERNAME });
+    renderWishlists('my-trips', trips);
 }
