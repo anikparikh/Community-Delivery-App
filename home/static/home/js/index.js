@@ -24,6 +24,8 @@ async function displayNearbyStores(latitude, longitude) {
 function geocoderCallback(data) {
     const latitude = data.result.center[1];
     const longitude = data.result.center[0];
+    // ✅ Save globally for later refreshes
+    window.MAP_MARKER_COORDS = [longitude, latitude];
     displayNearbyStores(latitude, longitude);
 }
 

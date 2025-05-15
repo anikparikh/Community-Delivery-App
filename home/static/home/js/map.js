@@ -63,6 +63,8 @@ function plotStoresOnMap(map, storesGeoJson, handleMarkerClick) {
 
         el.addEventListener('click', () => {
             handleMarkerClick(store.properties.id); // ✅ call passed-in function
+
+             window.MAP_MARKER_COORDS = store.geometry.coordinates;
         });
 
         new mapboxgl.Marker(el)

@@ -24,16 +24,29 @@
         <button id="add-wishlist">Add a wishlist</button>
     </div>
 
+    <!-- ✅ Wishlist display tabs -->
+    <div id="wishlist-tabs" style="position: absolute; top: 80px; left: 10px; z-index: 999; background: white; padding: 10px; border-radius: 8px; width: 300px; max-height: 70vh; overflow-y: auto;">
+        <h3>Nearby Wishlists</h3>
+        <div id="nearby-wishlists"></div>
+
+        <h3>My Requests</h3>
+        <div id="my-wishlists"></div>
+
+        <h3>My Trips</h3>
+        <div id="my-trips"></div>
+    </div>
+
     <!-- Mapbox JS -->
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js'></script>
     <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js'></script>
 
-<script>
-    window.USERNAME = "{{ request.GET.username|default:'' }}";
-</script>
-
+    <script>
+        // Pass username from query param to JS
+        window.USERNAME = "{{ request.GET.username|default:'' }}";
+    </script>
 
     <!-- ✅ App scripts -->
+    <script type="module" src="{% static 'home/js/helpers.js' %}"></script>
     <script type="module" src="{% static 'home/js/api.js' %}"></script>
     <script type="module" src="{% static 'home/js/wishlists.js' %}"></script>
     <script type="module" src="{% static 'home/js/index.js' %}"></script>

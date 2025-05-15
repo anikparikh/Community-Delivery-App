@@ -1,0 +1,9 @@
+.store {
+    width: 20px;
+    height: 20px;
+    background-color: green;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
