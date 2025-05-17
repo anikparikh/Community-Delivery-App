@@ -32,7 +32,7 @@ Kartpool is a full-stack web application that enables hyperlocal delivery throug
 
 https://github.com/anikparikh/Community-Delivery-App/blob/main/kartpool%202.png?raw=true
 
-
+https://github.com/anikparikh/Community-Delivery-App/blob/main/kartpool.png?raw=true
 ## 🛠️ Setup Instructions
 
 1. Clone the repository:
