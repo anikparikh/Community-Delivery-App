@@ -1,6 +1,8 @@
 import { addWishlist, fetchNearbyWishlists } from './api.js';
 import { renderWishlists } from './helpers.js';
 import { setStoreNavigation } from './map.js';
+import { updateWishlist } from './api.js';
+import { updateWishlistNode } from './index.js';
 
 export function updateSelectedStore(storeId) {
     window.STORE = storeId;
@@ -47,3 +49,36 @@ export async function displayMyTrips(lat, lng) {
     const trips = await fetchNearbyWishlists(lat, lng, { wishmaster: USERNAME });
     renderWishlists('my-trips', trips);
 }
+
+
+export async function updateWishlistStatus(event) {
+    const className = event.target.className;
+    const id = event.target.getAttribute('data-id');
+
+    switch (className) {
+        case 'accept':
+            event.preventDefault();
+            updateWishlist(id, {
+                status: 'ACCEPTED',
+                wishmaster: USERNAME
+            }).then(() => {
+                updateWishlistNode(event.target, 'ACCEPTED');
+            }).catch(console.error);
+            break;
+
+        case 'accepted':
+            event.preventDefault();
+            updateWishlist(id, {
+                status: 'FULFILLED',
+                wishmaster: USERNAME
+            }).then(() => {
+                updateWishlistNode(event.target, 'FULFILLED');
+            }).catch(console.error);
+            break;
+    }
+}
+
+export {
+    addWishlist,
+    fetchNearbyWishlists,
+};

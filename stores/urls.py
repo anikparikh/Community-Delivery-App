@@ -1,9 +1,13 @@
+# urls.py
+
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from stores import views as stores_views
+from .views import StoreView, WishlistView
 
 router = DefaultRouter()
-router.register(r'stores', stores_views.StoreView, basename='stores')
+router.register(r'stores', StoreView, basename='stores')
+router.register(r'wishlists', WishlistView, basename='wishlists')
 
 urlpatterns = [
-    *router.urls,  # ensures it's a list, avoiding circular reference issues
+    path('', include(router.urls)),
 ]

@@ -1,8 +1,8 @@
 from rest_framework.response import Response
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from .models import Wishlist
 from .serializers import WishlistSerializer
-from .services import create_wishlist, get_wishlists  # ✅
+from .services import create_wishlist, get_wishlists, update_wishlist  # ✅ include update_wishlist
 
 class WishlistView(viewsets.ModelViewSet):
     queryset = Wishlist.objects.all()
@@ -28,7 +28,7 @@ class WishlistView(viewsets.ModelViewSet):
         wishlist_data = WishlistSerializer(wishlist, many=False)
         return Response(wishlist_data.data)
 
-    def list(self, request):  # ✅ NEW METHOD FOR NEARBY FETCHING
+    def list(self, request):  # ✅ GET nearby wishlists
         latitude = self.request.query_params.get('lat')
         longitude = self.request.query_params.get('lng')
 
@@ -48,3 +48,16 @@ class WishlistView(viewsets.ModelViewSet):
 
         wishlist_data = WishlistSerializer(wishlists, many=True)
         return Response(wishlist_data.data)
+
+    def partial_update(self, request, pk=None):  # ✅ PATCH /wishlists/:id/
+        wishlist = update_wishlist(
+            pk=pk,
+            wishmaster=request.data.get('wishmaster'),
+            status=request.data.get('status')
+        )
+
+        if wishlist is None:
+            return Response({"error": "Wishlist not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = WishlistSerializer(wishlist, many=False)
+        return Response(serializer.data)
