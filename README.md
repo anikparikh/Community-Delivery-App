@@ -30,7 +30,8 @@ Kartpool is a full-stack web application that enables hyperlocal delivery throug
 
 ## 📸 Screenshots
 
-*Add screenshots of the store discovery map, wishlist interface, and fulfillment workflow here.*
+https://github.com/anikparikh/Community-Delivery-App/blob/main/kartpool%202.png?raw=true
+
 
 ## 🛠️ Setup Instructions
 
