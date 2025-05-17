@@ -11,7 +11,8 @@ import {
     updateSelectedStore,
     displayNearbyWishlists,
     displayMyRequests,
-    displayMyTrips
+    displayMyTrips,
+    updateWishlistStatus
 } from './wishlists.js';
 
 import { fetchNearbyStores } from './api.js';
@@ -50,3 +51,20 @@ document.getElementById("add-wishlist").onclick = () => {
     window.STORE = STORE;
     createWishlist();
 };
+
+const wishlistContainers = document.getElementsByClassName('wishlists');
+for (let i = 0; i < wishlistContainers.length; i++) {
+    wishlistContainers[i].addEventListener('click', updateWishlistStatus);
+}
+
+export function updateWishlistNode(icon, status) {
+    if (status === 'ACCEPTED') {
+        icon.className = 'accepted';
+        icon.title = 'Mark as Fulfilled';
+        icon.style.color = 'green'; // optional style cue
+    } else if (status === 'FULFILLED') {
+        icon.className = 'fulfilled';
+        icon.title = 'Fulfilled';
+        icon.style.color = 'gray';
+    }
+}

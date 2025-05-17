@@ -63,3 +63,19 @@ export async function fetchNearbyWishlists(latitude, longitude, options = {}) {
         return [];
     }
 }
+
+export async function updateWishlist(id, body) {
+    const response = await fetch(`/wishlists/${id}/`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+        throw new Error(`Failed to update wishlist: ${response.statusText}`);
+    }
+
+    return await response.json();
+}

@@ -22,3 +22,14 @@ def get_wishlists(latitude: float, longitude: float, options: dict):
             limit=100
         )
     ).order_by('created_at')
+
+def update_wishlist(pk: str, wishmaster: str = None, status: str = "ACCEPTED"):
+    try:
+        wishlist = Wishlist.objects.get(pk=pk)
+        wishlist.wishmaster = wishmaster
+        wishlist.status = status
+        wishlist.save(update_fields=['wishmaster', 'status'])
+        return wishlist
+    except ObjectDoesNotExist:
+        print("Wishlist does not exist")
+        return None
